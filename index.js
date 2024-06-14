@@ -33,7 +33,9 @@ async function run() {
     // create employee
     app.post("/create-employee", async (req, res) => {
       const mail = req.query.email;
+      const count = await employees.find().toArray();
       const body = await req.body;
+      body.key = count + 1;
 
       if (mail === "asifinc@gmail.com") {
         const found = await employees.findOne({ email: body.email });
@@ -46,6 +48,12 @@ async function run() {
       } else {
         res.send({ message: "You are not allowed to do this!" });
       }
+    });
+
+    // Fetch all employees
+    app.get("/employees", async (req, res) => {
+      const result = await employees.find().toArray();
+      res.send(result);
     });
   } catch (error) {
     console.error(error);
