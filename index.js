@@ -1,7 +1,7 @@
 require("dotenv").config();
 const express = require("express");
 const cors = require("cors");
-const { MongoClient, ServerApiVersion } = require("mongodb");
+const { MongoClient, ServerApiVersion, ObjectId } = require("mongodb");
 
 const app = express();
 
@@ -33,9 +33,9 @@ async function run() {
     // create employee
     app.post("/create-employee", async (req, res) => {
       const mail = req.query.email;
-      const count = await employees.find().toArray();
+      let count = await employees.find().toArray();
       const body = await req.body;
-      body.key = count + 1;
+      body.key = count.length + 1;
 
       if (mail === "asifinc@gmail.com") {
         const found = await employees.findOne({ email: body.email });
@@ -53,6 +53,33 @@ async function run() {
     // Fetch all employees
     app.get("/employees", async (req, res) => {
       const result = await employees.find().toArray();
+      res.send(result);
+    });
+
+    // Get employee by id
+    app.get("/employees/:id", async (req, res) => {
+      const id = req.params.id;
+      const result = await employees.findOne({ _id: new ObjectId(id) });
+
+      res.send(result);
+    });
+
+    // Update employee
+    app.patch("/employees/:id", async (req, res) => {
+      const id = req.params.id;
+      const { firstname, lastname, phone } = await req.body;
+
+      const result = await employees.updateOne(
+        { _id: new ObjectId(id) },
+        {
+          $set: {
+            firstname,
+            lastname,
+            phone,
+          },
+        }
+      );
+
       res.send(result);
     });
   } catch (error) {
