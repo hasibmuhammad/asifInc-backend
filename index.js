@@ -7,7 +7,7 @@ const app = express();
 
 // Middlewares
 app.use(express.json());
-app.use(cors());
+app.use(cors({ origin: ["https://asifinc-7eed0.web.app"] }));
 app.use(express.urlencoded({ extended: true }));
 
 // MongoDB
