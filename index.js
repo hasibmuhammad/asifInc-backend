@@ -82,6 +82,27 @@ async function run() {
 
       res.send(result);
     });
+
+    // Block Employee
+    app.patch("/block/:id", async (req, res) => {
+      const id = req.params.id;
+
+      const employee = await employees.findOne({ _id: new ObjectId(id) });
+
+      if (employee) {
+        const result = await employees.updateOne(
+          { _id: new ObjectId(id) },
+          {
+            $set: {
+              blocked: !employee.blocked,
+            },
+          }
+        );
+        res.send({ result, employee });
+      } else {
+        res.send({ message: "Employee Not Found!" });
+      }
+    });
   } catch (error) {
     console.error(error);
   }
