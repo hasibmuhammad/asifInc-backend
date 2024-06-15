@@ -30,6 +30,10 @@ async function run() {
     // Collections
     const employees = client.db("asifIncDB").collection("employees");
 
+    app.get("/", (req, res) => {
+      res.send("Welcome to asif inc backend!");
+    });
+
     // create employee
     app.post("/create-employee", async (req, res) => {
       const mail = req.query.email;
@@ -116,10 +120,6 @@ async function run() {
   }
 }
 run().catch(console.dir);
-
-app.get("/", (req, res) => {
-  res.send("Welcome to asif inc backend!");
-});
 
 // Server
 const PORT = process.env.PORT || 5000;
