@@ -33,8 +33,8 @@ async function run() {
     // create employee
     app.post("/create-employee", async (req, res) => {
       const mail = req.query.email;
-      let count = await employees.find().toArray();
       const body = await req.body;
+      let count = await employees.find().toArray();
       body.key = count[count.length - 1].key + 1;
 
       if (mail === "asifinc@gmail.com") {
