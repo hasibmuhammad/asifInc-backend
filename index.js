@@ -103,6 +103,14 @@ async function run() {
         res.send({ message: "Employee Not Found!" });
       }
     });
+
+    // Delete employee
+    app.delete("/delete/:id", async (req, res) => {
+      const result = await employees.deleteOne({
+        _id: new ObjectId(req.params.id),
+      });
+      res.send(result);
+    });
   } catch (error) {
     console.error(error);
   }
