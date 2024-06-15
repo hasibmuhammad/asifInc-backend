@@ -35,7 +35,7 @@ async function run() {
       const mail = req.query.email;
       let count = await employees.find().toArray();
       const body = await req.body;
-      body.key = count.length + 1;
+      body.key = count[count.length - 1].key + 1;
 
       if (mail === "asifinc@gmail.com") {
         const found = await employees.findOne({ email: body.email });
